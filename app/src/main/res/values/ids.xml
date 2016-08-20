@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="tag_index"/>
+    <item type="id" name="tag_position"/>
+    <item type="id" name="tag_pic_urls"/>
+
+    <item type="id" name="cancel_button"/>
+    <item type="id" name="bg_view"/>
+
+    <item name="toolbar" type="id"/>
+    <item name="toolbar_title" type="id"/>
+    <item name="recycler_view" type="id"/>
+    <item name="view_pager" type="id"/>
+    <item name="list_view" type="id"/>
+    <item name="web_view" type="id"/>
+    <item name="iv_image" type="id"/>
+    <item name="tv_title" type="id"/>
+    <item name="refresh_view" type="id"/>
+    <item name="float_button_view" type="id"/>
+    <item name="bottom_navigation" type="id"/>
+</resources>

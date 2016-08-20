@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="titles">
+        <item>@string/str_index</item>
+        <item>@string/str_edit</item>
+        <item>@string/str_explore</item>
+        <item>@string/str_me</item>
+    </string-array>
+
+    <string-array name="home_titles">
+        <item>热点</item>
+        <item>运动</item>
+        <item>汽车</item>
+        <item>科技</item>
+        <item>金融</item>
+    </string-array>
+
+    <string-array name="explore_list_title">
+        <item>微博推荐</item>
+        <item>珍藏图集</item>
+        <item>电影推荐</item>
+        <item>音乐推荐</item>
+        <item>书籍推荐</item>
+        <item>Sciences</item>
+    </string-array>
+
+    <string-array name="movie_titles">
+        <item>即将上映</item>
+        <item>正在上映</item>
+        <item>经典榜单</item>
+    </string-array>
+</resources>

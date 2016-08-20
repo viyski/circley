@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:bbn_itemColorActive="#FFFFFFFF"
+    app:bbn_itemColorInactive="#7FFFFFFF"
+    app:bbn_badgeColor="#FFCC0000"
+    app:bbn_rippleColor="#33ffffff">
+
+    <item
+        android:id="@+id/bbn_item1"
+        android:color="@color/colorPrimary"
+        android:icon="@mipmap/ic_action_bike"
+        android:title="@string/str_index" />
+    <item
+        android:id="@+id/bbn_item2"
+        android:color="@color/teal"
+        android:icon="@mipmap/ic_action_edit"
+        android:title="@string/str_edit" />
+    <item
+        android:id="@+id/bbn_item3"
+        android:color="@color/crimson"
+        android:icon="@mipmap/ic_action_search"
+        android:title="@string/str_explore" />
+    <item
+        android:id="@+id/bbn_item4"
+        android:color="@color/darkpurple"
+        android:icon="@mipmap/ic_action_user"
+        android:title="@string/str_me" />
+
+</menu>

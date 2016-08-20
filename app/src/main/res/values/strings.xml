@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">CircleY</string>
+
+    <string name="msg_now">片刻之前</string>
+    <string name="msg_today">今天</string>
+    <string name="msg_yesterday">昨天</string>
+    <string name="msg_few_minutes_ago">分钟前</string>
+    <string name="msg_male">男</string>
+    <string name="msg_female">女</string>
+    <string name="msg_gender_unknown">未知</string>
+
+    <string name="str_index">首页</string>
+    <string name="str_explore">发现</string>
+    <string name="str_edit">编辑</string>
+    <string name="str_me">我</string>
+    <string name="str_collect">收藏</string>
+    <string name="str_share">分享</string>
+    <string name="share">分享到</string>
+    <string name="share_text">
+        Circley是一款资讯类软件,提供新闻、微博热点、图集、电影音乐推荐等资讯内容,
+        登录用户还可以发布最新的微资讯,收藏自己喜欢的网站链接,亦可以看到其他用户的共享。
+        下载页面：https://fir.im/Circley
+    </string>
+    <string name="no_email_app_tip">请先安装邮件应用并设置账户，或直接发送邮件至viyski@163.com</string>
+    <string name="transfer_apk_to_friend">发送%1$s安装包给好友</string>
+    <string name="toast_exit_tip">再按一次退出应用</string>
+    <string name="no_data">暂无数据</string>
+    <string name="load_data_failed">加载失败</string>
+    <string name="loading_data">正在加载...</string>
+    <string name="load_data_adequate">没有更多啦</string>
+    <string name="str_detail">详情</string>
+    <string name="str_no_data">暂无数据</string>
+    <string name="str_load_fail">网页加载失败\n点击重新加载</string>
+    <string name="str_my_collect">我的收藏</string>
+    <string name="str_setting">设置</string>
+    <string name="hint_input_website">请输入网站链接</string>
+    <string name="hint_input_describe">请输入标题或描述</string>
+    <string name="str_search">查找</string>
+    <string name="str_cancel">取消</string>
+    <string name="hint_input_website_available">链接不可用哦</string>
+    <string name="str_commit_fail">提交失败，请重试</string>
+    <string name="str_login_fail">登录失败!</string>
+    <string name="logging">正在登录,请稍后...</string>
+    <string name="str_auth_fail">授权失败</string>
+    <string name="str_logout">退出登录</string>
+    <string name="input_prefill">prefill</string>
+
+
+</resources>
