@@ -2,6 +2,7 @@ package com.gm.circley.control;
 
 import android.content.Context;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.framework.annotation.AsyncAtomMethod;
 import com.framework.base.BaseControl;
@@ -13,6 +14,14 @@ import com.gm.circley.control.manager.DBManager;
 import com.gm.circley.db.DBPhoto;
 import com.gm.circley.interf.ConstantsParams;
 import com.gm.circley.interf.UrlParams;
+import com.gm.circley.model.BlogEntity;
+import com.gm.circley.model.BookApiEntity;
+import com.gm.circley.model.BookEntity;
+import com.gm.circley.model.MovieApiEntity;
+import com.gm.circley.model.MovieDetail;
+import com.gm.circley.model.MovieEntity;
+import com.gm.circley.model.MusicApiEntity;
+import com.gm.circley.model.MusicEntity;
 import com.gm.circley.model.NewsApiEntity;
 import com.gm.circley.model.NewsEntity;
 import com.gm.circley.model.PageBean;
@@ -34,6 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 import okhttp3.Call;
 
 /**
@@ -251,5 +262,302 @@ public class PageControl extends BaseControl {
             connection.disconnect();
         }
 
+    }
+
+    @AsyncAtomMethod
+    public void getBlogListData(Context context) {
+        if (context == null) return;
+        pageSize = PAGE_SIZE_LIMIT;
+        BmobQuery<BlogEntity> list = new BmobQuery<>();
+        list.setLimit(PAGE_SIZE_LIMIT);
+        list.order("-createdAt");
+        list.include("userEntity");
+        list.findObjects(context, new FindListener<BlogEntity>() {
+            @Override
+            public void onSuccess(List<BlogEntity> entities) {
+                mModel.put(1, entities);
+                if (entities.size() == 0) {
+                    sendMessage("getDataEmpty");
+                } else if (entities.size() == PAGE_SIZE_LIMIT) {
+                    sendMessage("getDataAdequate");
+                } else {
+                    sendMessage("getDataInadequate");
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                dealWithExceptionMessage(s);
+                sendMessage("getDataFailed");
+            }
+        });
+    }
+
+    @AsyncAtomMethod
+    public void getBlogListDataMore(Context context) {
+        if (context == null) return;
+        if (lastPageSize == pageSize) {
+            return ;
+        } else {
+            lastPageSize = pageSize;
+        }
+        BmobQuery<BlogEntity> list = new BmobQuery<>();
+        list.setSkip(pageSize);
+        list.setLimit(PAGE_SIZE_LIMIT);
+        list.order("-createdAt");
+        list.include("userEntity");
+        list.findObjects(context, new FindListener<BlogEntity>() {
+            @Override
+            public void onSuccess(List<BlogEntity> entities) {
+                pageSize += entities.size();
+                mModel.put(2, entities);
+                if (entities.size() == 0) {
+                    sendMessage("getMoreDataEmpty");
+                } else if (entities.size() == PAGE_SIZE_LIMIT) {
+                    sendMessage("getMoreDataAdequate");
+                } else {
+                    sendMessage("getMoreDataInadequate");
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                dealWithExceptionMessage(s);
+                sendMessage("getMoreDataFailed");
+            }
+        });
+    }
+
+    /**
+     * @param context
+     */
+    @AsyncAtomMethod
+    public void getMovieList(Context context,String movie) {
+        Map<String, String> params = new HashMap<>();
+        if (movie.contains(UrlParams.MOVIE_IN_THEATERS)) {
+            params.put("city", "广州");
+        }
+        RequestCall build = OkHttpProxy.get()
+                .url(UrlParams.DOUBAN_API_BASE_URL + movie)
+                .params(params).build();
+        build.execute(new JsonCallBack<MovieApiEntity>(){
+
+            @Override
+            public void onSuccess(MovieApiEntity response) {
+                int count = response.getCount();
+                List<MovieEntity> subjects = response.getSubjects();
+                if (subjects != null) {
+                    mModel.put(1, subjects);
+                    if (subjects.size() == 0) {
+                        sendMessage("getDataEmpty");
+                    } else if (count == PAGE_SIZE_LIMIT) {
+                        sendMessage("getDataAdequate");
+                    } else {
+                        sendMessage("getDataInadequate");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call request, Exception e) {
+
+            }
+        });
+    }
+
+    @AsyncAtomMethod
+    public void getMovieMoreList(Context context,String movie,int start){
+        Map<String, String> params = new HashMap<>();
+        if (movie.contains(UrlParams.MOVIE_IN_THEATERS)) {
+            params.put("city", "广州");
+        }
+        params.put("start",start + "");
+        RequestCall build = OkHttpProxy.get()
+                .url(UrlParams.DOUBAN_API_BASE_URL + movie)
+                .params(params).build();
+        build.execute(new JsonCallBack<MovieApiEntity>(){
+
+            @Override
+            public void onSuccess(MovieApiEntity response) {
+                int count = response.getCount();
+                List<MovieEntity> subjects = response.getSubjects();
+                if (subjects != null){
+                    pageSize += subjects.size();
+                    mModel.put(2, subjects);
+                    if (subjects.size() == 0) {
+                        sendMessage("getMoreDataEmpty");
+                    } else if (subjects.size() == PAGE_SIZE_LIMIT) {
+                        sendMessage("getMoreDataAdequate");
+                    } else {
+                        sendMessage("getMoreDataInadequate");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call request, Exception e) {
+
+            }
+        });
+    }
+
+    public void getMovieDesc(String id) {
+        RequestCall build = OkHttpProxy.get()
+                .url(UrlParams.DOUBAN_API_BASE_URL + UrlParams.MOVIE_SUBJECT + id)
+                .build();
+        build.execute(new JsonCallBack<MovieDetail>() {
+            @Override
+            public void onSuccess(MovieDetail response) {
+                if (response != null){
+                    String summary = response.getSummary();
+                    if (!TextUtils.isEmpty(summary)){
+                        mModel.put("movieDesc",summary);
+                        sendMessage("setMovieDesc");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call request, Exception e) {
+            }
+        });
+    }
+
+    /**
+     * @param context
+     */
+    @AsyncAtomMethod
+    public void getBookList(Context context,String bookTag) {
+        Map<String, String> params = new HashMap<>();
+        params.put("tag",bookTag);
+        RequestCall build = OkHttpProxy.get()
+                .url(UrlParams.DOUBAN_API_BASE_URL + UrlParams.BOOK_SEARCH)
+                .params(params).build();
+        build.execute(new JsonCallBack<BookApiEntity>(){
+
+            @Override
+            public void onSuccess(BookApiEntity response) {
+                int count = response.getCount();
+                List<BookEntity> books = response.getBooks();
+                if (books != null) {
+                    mModel.put(1, books);
+                    if (books.size() == 0) {
+                        sendMessage("getDataEmpty");
+                    } else if (count == PAGE_SIZE_LIMIT) {
+                        sendMessage("getDataAdequate");
+                    } else {
+                        sendMessage("getDataInadequate");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call request, Exception e) {
+
+            }
+        });
+    }
+
+    @AsyncAtomMethod
+    public void getBookMoreList(Context context,String bookTag,int start){
+        Map<String, String> params = new HashMap<>();
+        params.put("tag",bookTag);
+        params.put("start",start + "");
+        RequestCall build = OkHttpProxy.get()
+                .url(UrlParams.DOUBAN_API_BASE_URL + UrlParams.BOOK_SEARCH)
+                .params(params).build();
+        build.execute(new JsonCallBack<BookApiEntity>(){
+
+            @Override
+            public void onSuccess(BookApiEntity response) {
+                int count = response.getCount();
+                List<BookEntity> books = response.getBooks();
+                if (books != null){
+                    pageSize += books.size();
+                    mModel.put(2, books);
+                    if (books.size() == 0) {
+                        sendMessage("getMoreDataEmpty");
+                    } else if (books.size() == PAGE_SIZE_LIMIT) {
+                        sendMessage("getMoreDataAdequate");
+                    } else {
+                        sendMessage("getMoreDataInadequate");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call request, Exception e) {
+
+            }
+        });
+    }
+
+    /**
+     * @param context
+     */
+    @AsyncAtomMethod
+    public void getMusicList(Context context,String bookTag) {
+        Map<String, String> params = new HashMap<>();
+        params.put("tag",bookTag);
+        RequestCall build = OkHttpProxy.get()
+                .url(UrlParams.DOUBAN_API_BASE_URL + UrlParams.MUSIC_SEARCH)
+                .params(params).build();
+        build.execute(new JsonCallBack<MusicApiEntity>(){
+
+            @Override
+            public void onSuccess(MusicApiEntity response) {
+                int count = response.getCount();
+                List<MusicEntity> musics = response.getMusics();
+                if (musics != null) {
+                    mModel.put(1, musics);
+                    if (musics.size() == 0) {
+                        sendMessage("getDataEmpty");
+                    } else if (count == PAGE_SIZE_LIMIT) {
+                        sendMessage("getDataAdequate");
+                    } else {
+                        sendMessage("getDataInadequate");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call request, Exception e) {
+
+            }
+        });
+    }
+
+    @AsyncAtomMethod
+    public void getMusicMoreList(Context context,String bookTag,int start){
+        Map<String, String> params = new HashMap<>();
+        params.put("tag",bookTag);
+        params.put("start",start + "");
+        RequestCall build = OkHttpProxy.get()
+                .url(UrlParams.DOUBAN_API_BASE_URL + UrlParams.MUSIC_SEARCH)
+                .params(params).build();
+        build.execute(new JsonCallBack<MusicApiEntity>(){
+
+            @Override
+            public void onSuccess(MusicApiEntity response) {
+                int count = response.getCount();
+                List<MusicEntity> musics = response.getMusics();
+                if (musics != null){
+                    pageSize += musics.size();
+                    mModel.put(2, musics);
+                    if (musics.size() == 0) {
+                        sendMessage("getMoreDataEmpty");
+                    } else if (musics.size() == PAGE_SIZE_LIMIT) {
+                        sendMessage("getMoreDataAdequate");
+                    } else {
+                        sendMessage("getMoreDataInadequate");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call request, Exception e) {
+
+            }
+        });
     }
 }

@@ -17,7 +17,7 @@ import im.fir.sdk.FIR;
  */
 public class BaseApplication extends Application {
 
-    public static final String APP_ROOT_DIR = "Circley";
+    public static final String APP_ROOT_DIR = "circley";
     public static final String APP_CACHE_DIR = APP_ROOT_DIR + File.separator + "cache";
     private static Context mContext;
     private static BaseApplication mAppInstance;

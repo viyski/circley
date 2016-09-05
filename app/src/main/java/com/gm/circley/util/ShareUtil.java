@@ -47,7 +47,7 @@ public class ShareUtil {
         share(context, context.getString(R.string.share_text));
     }
 
-    private static void share(Context context, String content) {
+    public static void share(Context context, String content) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.share));

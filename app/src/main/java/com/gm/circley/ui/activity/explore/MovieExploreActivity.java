@@ -2,14 +2,16 @@ package com.gm.circley.ui.activity.explore;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
 import com.gm.circley.R;
 import com.gm.circley.adapter.TabPagerAdapter;
 import com.gm.circley.base.BaseActivity;
+import com.gm.circley.base.BaseListFragment;
 import com.gm.circley.ui.fragment.MovieComingFragment;
-import com.gm.circley.ui.fragment.MovieListFragment;
 import com.gm.circley.ui.fragment.MoviePlayingFragment;
+import com.gm.circley.ui.fragment.MovieTopListFragment;
 import com.gm.circley.util.Utils;
 import com.gm.circley.widget.ViewPagerFixed;
 
@@ -47,7 +49,7 @@ public class MovieExploreActivity extends BaseActivity {
     protected void initData() {
         MovieComingFragment fragment1 = new MovieComingFragment();
         MoviePlayingFragment fragment2 = new MoviePlayingFragment();
-        MovieListFragment fragment3 = new MovieListFragment();
+        MovieTopListFragment fragment3 = new MovieTopListFragment();
         fragmentList.add(fragment1);
         fragmentList.add(fragment2);
         fragmentList.add(fragment3);
@@ -55,5 +57,24 @@ public class MovieExploreActivity extends BaseActivity {
         viewPager.setAdapter(new TabPagerAdapter(getSupportFragmentManager(),titles,fragmentList));
         viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager,true);
+        viewPager.addOnPageChangeListener(mOnPageChangeListener);
     }
+
+    private ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            BaseListFragment fragment = (BaseListFragment) fragmentList.get(position);
+            fragment.setLoadingViewVisible();
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 }

@@ -36,10 +36,12 @@ public interface ConstantsParams {
 
     int TAKE_PICTURE_REQUEST_CODE = 7;
     int CHOOSE_PICTURE_REQUEST_CODE = 23;
+    int CROP_CUTTING_REQUEST_CODE = 79;
     int PROFILE_REQUEST_CODE = 29;
 
     int THEME_TYPE_BLUE = 0x000;
     int THEME_TYPE_RED = 0x001;
+    int THEME_TYPE_TEAL = 0x002;
     String PARAM_TARGET_URL = "PARAM_TARGET_URL";
     String PARAM_TITLE = "PARAM_TITLE";
     String PARAM_IMAGE_URL = "PARAM_IMAGE_URL";

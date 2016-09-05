@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bmob.BmobProFile;
+import com.bmob.btp.callback.UploadBatchListener;
 import com.framework.dialog.TipDialog;
 import com.framework.dialog.ToastTip;
 import com.gm.circley.BaseApplication;
@@ -45,6 +46,7 @@ import com.gm.circley.widget.UploadImageView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -210,10 +212,11 @@ public class EditNewBlogActivity extends BaseActivity<SingleControl> {
         if (mBlogEntity.getImageList() != null && mBlogEntity.getImageList().size() > 0) {
             List<String> list = mBlogEntity.getImageList();
             int size = list.size();
-            final String[] filePaths = list.toArray(new String[size]);
-            BmobProFile.getInstance(this).uploadBatch(filePaths, new com.bmob.btp.callback.UploadBatchListener() {
+
+            String[] imageFiles = list.toArray(new String[size]);
+            BmobProFile.getInstance(this).uploadBatch(imageFiles, new UploadBatchListener() {
                 @Override
-                public void onSuccess(boolean isFinish, String[] strings, String[] strings1, BmobFile[] bmobFiles) {
+                public void onSuccess(boolean isFinish, String[] fileNames, String[] urls, BmobFile[] bmobFiles) {
                     if (isFinish){
                         for (UploadImageView item :uploadImageViews) {
                             item.setProgressFinish();
@@ -300,7 +303,11 @@ public class EditNewBlogActivity extends BaseActivity<SingleControl> {
                     public void onOtherButtonClick(ActionSheet actionSheet, int index) {
                         switch (index) {
                             case 0:
-                                takePicturePath = "/" + BaseApplication.APP_CACHE_DIR + "/" + DateUtil.getCurrentMillis() + ".jpg";
+                                File dirFile = new File(BaseApplication.APP_CACHE_DIR);
+                                if (!dirFile.exists()){
+                                    dirFile.mkdirs();
+                                }
+                                takePicturePath = dirFile.getAbsolutePath() + "/" + DateUtil.getCurrentMillis() + ".jpg";
                                 UIHelper.gotoTakePicture(EditNewBlogActivity.this, takePicturePath);
                                 break;
                             case 1:
@@ -318,12 +325,12 @@ public class EditNewBlogActivity extends BaseActivity<SingleControl> {
         if (resultCode == RESULT_OK){
             switch (requestCode){
                 case ConstantsParams.TAKE_PICTURE_REQUEST_CODE:
-                    setImageViewWithPath(Environment.getExternalStorageDirectory()+takePicturePath);
+                    setImageViewWithPath(Environment.getExternalStorageDirectory() + takePicturePath);
                     break;
                 case ConstantsParams.CHOOSE_PICTURE_REQUEST_CODE:
                     Uri uri = data.getData();
-                    String imagePath = GetPathFromUri4kitkat.getPath(this, uri);
-                    if (!TextUtils.isEmpty(imagePath)){
+                    String imagePath = GetPathFromUri4kitkat.getPath(this, data.getData());
+                    if (TextUtils.isEmpty(imagePath)){
                         String[] proj = {MediaStore.Images.Media.DATA};
                         Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
                         if (cursor != null && cursor.moveToFirst()) {
@@ -386,7 +393,7 @@ public class EditNewBlogActivity extends BaseActivity<SingleControl> {
                 }
             });
 
-            mImageManager.loadLocalImage(imageList.get(position),ivSelectedImage);
+            mImageManager.loadLocalImage(imageList.get(i),ivSelectedImage);
             llContainer.addView(view);
         }
 

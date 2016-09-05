@@ -77,7 +77,6 @@ public abstract class BaseActivity <T extends BaseControl> extends BaseAsyncActi
     private void init(){
         setTranslucentStatus(true);
         mImageManager = new ImageManager(mContext);
-        //mUserEntity = BmobUser.getCurrentUser(this, UserEntity.class);
         GlobalParams.screenWidth = DisplayUtil.getWindowWidth(this);
         GlobalParams.screenHeight = DisplayUtil.getWindowHeight(this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);

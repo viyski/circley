@@ -8,8 +8,17 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.gm.circley.interf.ConstantsParams;
+import com.gm.circley.model.BlogEntity;
+import com.gm.circley.model.BookEntity;
+import com.gm.circley.model.MovieEntity;
+import com.gm.circley.model.MusicEntity;
+import com.gm.circley.model.UserEntity;
+import com.gm.circley.ui.activity.AboutActivity;
+import com.gm.circley.ui.activity.DoubanDetailActivity;
+import com.gm.circley.ui.activity.FeedBackActivity;
 import com.gm.circley.ui.activity.LoginActivity;
 import com.gm.circley.ui.activity.MainActivity;
+import com.gm.circley.ui.activity.MovieDetailActivity;
 import com.gm.circley.ui.activity.WebPageActivity;
 
 import java.io.File;
@@ -20,6 +29,9 @@ import java.io.File;
  * </p>
  */
 public class UIHelper {
+
+    public static final int TYPE_BOOK = 1;
+    public static final int TYPE_MUSIC = 2;
 
     /**
      * 拍照
@@ -67,4 +79,52 @@ public class UIHelper {
     }
 
 
+    public static void gotoBlogDetailActivity(Context context, BlogEntity entity) {
+
+    }
+
+    public static void gotoUserInfoActivity(Context context, UserEntity userEntity) {
+
+    }
+
+    public static void gotoMovieDetailActivity(Context context, MovieEntity entity) {
+        Intent intent = new Intent(context,MovieDetailActivity.class);
+        intent.putExtra("MovieDetail",entity);
+        context.startActivity(intent);
+    }
+
+    public static void gotoBookDetailActivity(Activity context, BookEntity entity) {
+        Intent intent = new Intent(context, DoubanDetailActivity.class);
+        intent.putExtra("bookDetail",entity);
+        intent.putExtra("type",TYPE_BOOK);
+        context.startActivity(intent);
+    }
+
+    public static void gotoMusicDetailActivity(Context context, MusicEntity entity) {
+        Intent intent = new Intent(context, DoubanDetailActivity.class);
+        intent.putExtra("musicDetail",entity);
+        intent.putExtra("type",TYPE_MUSIC);
+        context.startActivity(intent);
+    }
+
+    public static void gotoAboutActivity(Context context) {
+        context.startActivity(new Intent(context,AboutActivity.class));
+    }
+
+    public static void gotoFeedbackActivity(Context context){
+        context.startActivity(new Intent(context,FeedBackActivity.class));
+    }
+
+    public static void startPhotoZoom(Activity activity,Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", true);
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 350);
+        intent.putExtra("outputY", 350);
+        intent.putExtra("return-data", true);
+        intent.putExtra("noFaceDetection", true);
+        activity.startActivityForResult(intent, ConstantsParams.CROP_CUTTING_REQUEST_CODE);
+    }
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/pop_favorite"
+        android:title="收藏"
+        android:icon="@mipmap/ic_action_heart"
+        android:orderInCategory="80"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/pop_share"
+        android:title="分享"
+        android:orderInCategory="80"
+        android:icon="@mipmap/ic_action_share"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/pop_delete"
+        android:title="删除"
+        android:orderInCategory="80"
+        android:icon="@mipmap/ic_action_trash"
+        app:showAsAction="ifRoom"/>
+
+</menu>  

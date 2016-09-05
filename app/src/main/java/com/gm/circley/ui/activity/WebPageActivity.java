@@ -53,6 +53,9 @@ public class WebPageActivity extends BaseActivity {
             case ConstantsParams.THEME_TYPE_RED:
                 setStatusBarTintColor(R.color.crimson);
                 mToolbar.setBackgroundResource(R.color.crimson);
+            case ConstantsParams.THEME_TYPE_TEAL:
+                setStatusBarTintColor(R.color.teal);
+                mToolbar.setBackgroundResource(R.color.teal);
                 break;
         }
     }

@@ -18,6 +18,7 @@
         <!--Navigation icon颜色设置-->
         <item name="drawerArrowStyle">@style/AppTheme.MyDrawerArrowStyle</item>
         <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+        <item name="android:popupMenuStyle">@android:style/Widget.Holo.Light.PopupMenu</item>
     </style>
 
     <style name="AnimationActivity" mce_bogus="1" parent="@android:style/Animation.Activity">

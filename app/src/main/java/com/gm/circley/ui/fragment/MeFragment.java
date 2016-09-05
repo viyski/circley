@@ -75,6 +75,8 @@ public class MeFragment extends BaseFragment{
         if (mUser != null){
             String nickName = mUser.getNickName();
             String userAvatar = mUser.getUserAvatar();
+            tvUsername.setText("reese");
+            mImageManager.loadCircleUrlImage("http://a1.qpic.cn/psb?/V11OmR2B18Wklo/iw9VCzL*TPuiGdW8la5EbQ3xRi967Efh*VqVmZ5CUaA!/b/dAsBAAAAAAAA&bo=gAJyBAAAAAAFB9A!&rf=viewer_4",ivAvatar);
             if (!TextUtils.isEmpty(nickName)){
                 tvUsername.setText(nickName);
             }

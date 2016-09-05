@@ -10,10 +10,9 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.gm.circley.R;
-import com.gm.circley.adapter.NewsRecyclerAdapter;
+import com.gm.circley.adapter.BaseRecyclerAdapter;
 import com.gm.circley.control.PageControl;
 import com.gm.circley.interf.ConstantsParams;
-import com.gm.circley.model.NewsEntity;
 import com.mingle.widget.LoadingView;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import butterknife.Bind;
 /**
  * Created by lgm on 2016/8/4.
  */
-public abstract class BaseListActivity extends BaseActivity<PageControl> implements SwipeRefreshLayout.OnRefreshListener{
+public abstract class BaseListActivity <E> extends BaseActivity<PageControl> implements SwipeRefreshLayout.OnRefreshListener{
 
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -40,8 +39,8 @@ public abstract class BaseListActivity extends BaseActivity<PageControl> impleme
     protected int currentPage = 1;
     protected Context mContext;
     private LinearLayoutManager mLinearLayoutManager;
-    private List<NewsEntity> mData;
-    private NewsRecyclerAdapter mAdapter;
+    protected List<E> mData;
+    protected BaseRecyclerAdapter mAdapter;
     private int lastVisibleItemPosition;
     private boolean isCompletedRefresh;
 
@@ -64,7 +63,7 @@ public abstract class BaseListActivity extends BaseActivity<PageControl> impleme
 
     protected void initData(){
         if (mAdapter == null) {
-            mAdapter = new NewsRecyclerAdapter(this, mData);
+            mAdapter = getAdapter();
             mAdapter.setThemeType(ConstantsParams.THEME_TYPE_RED);
             recyclerView.setAdapter(mAdapter);
         }else{
@@ -73,6 +72,8 @@ public abstract class BaseListActivity extends BaseActivity<PageControl> impleme
 
         onRefresh();
     }
+
+    protected abstract BaseRecyclerAdapter getAdapter();
 
     protected void initListeners(){
         recyclerView.addOnScrollListener(new PauseScrollListener());
@@ -157,7 +158,7 @@ public abstract class BaseListActivity extends BaseActivity<PageControl> impleme
         mAdapter.setLoadViewText(getString(R.string.loading_data));
 
 
-        List<NewsEntity> entities = mModel.getList(1);
+        List<E> entities = mModel.getList(1);
         mData.clear();
         mData.addAll(entities);
         mAdapter.notifyDataSetChanged();
@@ -168,7 +169,7 @@ public abstract class BaseListActivity extends BaseActivity<PageControl> impleme
         flStatus.setVisibility(View.GONE);
         mAdapter.setLoadMoreViewVisible(View.GONE);
 
-        List<NewsEntity> entities = mModel.getList(1);
+        List<E> entities = mModel.getList(1);
         mData.clear();
         mData.addAll(entities);
         mAdapter.notifyDataSetChanged();
@@ -181,7 +182,7 @@ public abstract class BaseListActivity extends BaseActivity<PageControl> impleme
     // 数据足够PAGE_SIZE (More)
     public void getMoreDataAdequate(){
         mAdapter.setLoadMoreViewVisible(View.VISIBLE);
-        List<NewsEntity> entities = mModel.getList(2);
+        List<E> entities = mModel.getList(2);
         mData.addAll(entities);
         mAdapter.notifyDataSetChanged();
     }
@@ -194,7 +195,7 @@ public abstract class BaseListActivity extends BaseActivity<PageControl> impleme
     public void getMoreDataInadequate(){
         mAdapter.setLoadMoreViewVisible(View.VISIBLE);
         mAdapter.setLoadViewText(getString(R.string.load_data_adequate));
-        List<NewsEntity> entities = mModel.getList(2);
+        List<E> entities = mModel.getList(2);
         mData.addAll(entities);
         mAdapter.notifyDataSetChanged();
     }

@@ -21,6 +21,24 @@ public class UserEntity extends BmobUser {
     private String addrStr;
     private double latitude;
     private double longitude;
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", nickName='" + nickName + '\'' +
+                ", userAvatar='" + userAvatar + '\'' +
+                ", userSign='" + userSign + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", district='" + district + '\'' +
+                ", addrStr='" + addrStr + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", favoriteList=" + favoriteList +
+                '}';
+    }
+
     private List<String> favoriteList;
 
 

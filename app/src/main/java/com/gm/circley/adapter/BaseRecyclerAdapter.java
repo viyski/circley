@@ -32,6 +32,7 @@ public abstract class BaseRecyclerAdapter<E> extends RecyclerView.Adapter<Recycl
         mActivity = activity;
         mData = data;
         mInflater = LayoutInflater.from(activity);
+        mImageManager = new ImageManager(activity);
     }
 
     @Override
@@ -61,5 +62,9 @@ public abstract class BaseRecyclerAdapter<E> extends RecyclerView.Adapter<Recycl
     }
 
     public void setLoadViewVisible(boolean visible) {
+    }
+
+    public void setThemeType(int themeTypeRed) {
+
     }
 }

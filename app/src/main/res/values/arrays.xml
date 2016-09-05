@@ -16,7 +16,7 @@
     </string-array>
 
     <string-array name="explore_list_title">
-        <item>微博推荐</item>
+        <!--<item>微博推荐</item>-->
         <item>珍藏图集</item>
         <item>电影推荐</item>
         <item>音乐推荐</item>
@@ -28,5 +28,11 @@
         <item>即将上映</item>
         <item>正在上映</item>
         <item>经典榜单</item>
+    </string-array>
+    <string-array name="setting_list_title">
+        <item>设置主题</item>
+        <item>意见反馈</item>
+        <item>关于Circley</item>
+        <item>检查更新</item>
     </string-array>
 </resources>

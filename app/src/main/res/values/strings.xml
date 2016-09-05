@@ -44,6 +44,7 @@
     <string name="str_auth_fail">授权失败</string>
     <string name="str_logout">退出登录</string>
     <string name="input_prefill">prefill</string>
+    <string name="hint_question_describe">请输入反馈内容!</string>
 
 
 </resources>

@@ -39,11 +39,11 @@ public class ExploreFragment extends BaseFragment{
 
     @Override
     protected void initData() {
-        imgs = new int[]{R.mipmap.ic_action_twitter,R.mipmap.ic_action_picture,R.mipmap.ic_action_movie,
+        imgs = new int[]{R.mipmap.ic_action_picture,R.mipmap.ic_action_movie,
                 R.mipmap.ic_action_music, R.mipmap.ic_action_book,R.mipmap.ic_action_planet};
         titles = Utils.getStrArray(mContext,R.array.explore_list_title);
 
-        actvitys = new String[]{"WeiboExploreActivity","PhotoExploreActivity","MovieExploreActivity","MusicExploreActivity",
+        actvitys = new String[]{"PhotoExploreActivity","MovieExploreActivity","MusicExploreActivity",
                 "BookExploreActivity","ScienceExploreActivity"};
 
         int size = imgs.length;

@@ -67,7 +67,7 @@ public class SplashActivity extends AppCompatActivity {
         final Random random = new Random();
         dbManager = new DBManager(this);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_rotate);
-        view.startAnimation(animation);
+        //view.startAnimation(animation);
         new Thread(){
             @Override
             public void run() {
@@ -106,6 +106,7 @@ public class SplashActivity extends AppCompatActivity {
         if (null == mUserEntity)
             UIHelper.gotoLoginActivity(this);
         else
+//            UIHelper.gotoLoginActivity(this);
             UIHelper.gotoMainActivity(this);
 
         finish();

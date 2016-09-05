@@ -163,6 +163,11 @@ public class NewsRecyclerAdapter extends BaseRecyclerAdapter<NewsEntity> {
     public void setLoadViewText(String text) {
         if (footView == null) return;
         ((TextView) ButterKnife.findById(footView, R.id.tv_loading_more)).setText(text);
+        if(text.contains("没有更多")){
+            ButterKnife.findById(footView,R.id.pb_load).setVisibility(View.GONE);
+        }else{
+            ButterKnife.findById(footView,R.id.pb_load).setVisibility(View.VISIBLE);
+        }
         notifyItemChanged(getItemCount());
     }
 

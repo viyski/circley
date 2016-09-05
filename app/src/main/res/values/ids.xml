@@ -14,6 +14,7 @@
     <item name="list_view" type="id"/>
     <item name="web_view" type="id"/>
     <item name="iv_image" type="id"/>
+    <item name="iv_avatar" type="id"/>
     <item name="tv_title" type="id"/>
     <item name="refresh_view" type="id"/>
     <item name="float_button_view" type="id"/>

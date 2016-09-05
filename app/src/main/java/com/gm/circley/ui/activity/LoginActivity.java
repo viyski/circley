@@ -4,6 +4,7 @@ package com.gm.circley.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -64,6 +65,7 @@ public class LoginActivity extends BaseActivity {
     private AuthInfo mAuthInfo;
     private SsoHandler mSsoHandler;
     private Oauth2AccessToken mAccessToken;
+    private boolean isServerSideLogin = false;
 
     @Override
     protected void requestWindowFeature() {
@@ -94,11 +96,6 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    public void gotoMain() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
-
     @OnClick({R.id.ll_wechat_weibo, R.id.ll_qq_login})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -121,7 +118,7 @@ public class LoginActivity extends BaseActivity {
         if (mTencent == null) {
             mTencent = Tencent.createInstance(ConstantsParams.QQ_APP_ID, this.getApplicationContext());
         }
-        mTencent.logout(this);
+
         if (!mTencent.isSessionValid()) {
             mTencent.login(this, "all", loginListener);
         }
@@ -232,7 +229,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onSuccess(JSONObject jsonObject) {
                         mUserEntity = BmobUser.getCurrentUser(LoginActivity.this, UserEntity.class);
-                        getUserInfo();
+                        getQQUserInfo();
                     }
 
                     @Override
@@ -264,7 +261,7 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    private void getUserInfo() {
+    private void getQQUserInfo() {
         if (mTencent != null) {
             IUiListener listener = new IUiListener() {
 
@@ -276,7 +273,7 @@ public class LoginActivity extends BaseActivity {
                 @Override
                 public void onComplete(final Object response) {
                     JSONObject json = (JSONObject)response;
-                    Logger.i(TAG,response.toString());
+                    Log.e("-----",json.toString());
                     if (json.has("ret") && json.optString("ret").equals("0")){
                         QQUserInfoEntity entity = FastJsonUtil.parseJson(json.toString(), QQUserInfoEntity.class);
                         if (entity == null){
@@ -321,7 +318,10 @@ public class LoginActivity extends BaseActivity {
                 }
             };
             mInfo = new UserInfo(LoginActivity.this, mTencent.getQQToken());
-            mInfo.getUserInfo(listener);
+
+            if (mTencent.isSessionValid() && mTencent.getQQToken().getOpenId() != null) {
+                mInfo.getUserInfo(listener);
+            }
         }
     }
 
@@ -391,4 +391,12 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        if (mTencent != null) {
+            //注销登录
+            mTencent.logout(LoginActivity.this);
+        }
+        super.onDestroy();
+    }
 }

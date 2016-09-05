@@ -4,7 +4,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -25,7 +24,9 @@ import com.mingle.widget.LoadingView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -52,6 +53,7 @@ public class PhotoExploreActivity extends BaseActivity<PageControl> implements P
     private List<PhotoView> viewList;
     private int mPosition;
     private String saveImageUrl;
+    private Set<String> photoSet;
 
     @Override
     protected void requestWindowFeature() {
@@ -183,9 +185,8 @@ public class PhotoExploreActivity extends BaseActivity<PageControl> implements P
     }
 
     private void savePhotoToMediaStore() {
-        int photoPos = PreferenceUtil.getInt(mContext, "photo_pos");
-        Log.d("-----MM","photoPos:"+photoPos + ":::"+mPosition );
-        if (photoPos == mPosition) {
+        photoSet = PreferenceUtil.getStringSet(mContext, "photoSet");
+        if (photoSet != null && photoSet.contains(String.valueOf(mPosition))){
             ToastTip.show("该图片已保存过!");
             return;
         } else {
@@ -202,7 +203,11 @@ public class PhotoExploreActivity extends BaseActivity<PageControl> implements P
 
     public void savePhotoSuccess() {
         ToastTip.show("保存成功");
-        PreferenceUtil.putInt(mContext, "photo_pos", mPosition);
+        if (photoSet == null){
+            photoSet = new HashSet<>();
+        }
+        photoSet.add(mPosition+"");
+        PreferenceUtil.putStringSet(mContext, "photoSet", photoSet);
     }
 
     public void savePhotoFail() {

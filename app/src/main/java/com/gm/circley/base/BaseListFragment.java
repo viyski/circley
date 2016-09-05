@@ -49,6 +49,7 @@ public abstract class BaseListFragment <E> extends BaseFragment<PageControl> imp
     private LinearLayoutManager mLinearLayoutManager;
     private int lastVisibleItemPosition;
     private boolean isCompletedRefresh;
+    protected boolean isSet = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,12 +85,18 @@ public abstract class BaseListFragment <E> extends BaseFragment<PageControl> imp
         super.initData();
         if (mAdapter == null) {
             mAdapter = getRecyclerAdapter();
-            setThemeType();
+            if (isSet) {
+                setThemeType();
+            }
             recyclerView.setAdapter(mAdapter);
         }else{
             recyclerView.setAdapter(mAdapter);
         }
         onRefresh();
+    }
+
+    protected  void isSetThemeType(boolean isSet){
+        this.isSet = isSet;
     }
 
     protected void setThemeType() {
